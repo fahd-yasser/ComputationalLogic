@@ -5,6 +5,7 @@ utterance(C) --> question(C).
 utterance(C) --> command(C).
 
 :- op(600, xfy, '=>').
+:- op(900, fy, not).
 
 
 %%% lexicon, driven by predicates %%%
@@ -28,6 +29,8 @@ pred(bird,    1,[n/bird]).
 pred(penguin, 1,[n/penguin]).
 pred(sparrow, 1,[n/sparrow]).
 pred(fly,     1,[v/fly]).
+pred(happy,   1,[a/happy]).
+pred(teacher, 1,[n/teacher]).
 
 pred2gr(P,1,C/W,X=>Lit):-
 	pred(P,1,L),
@@ -56,10 +59,13 @@ sword --> [that].
 % most of this follows Simply Logical, Chapter 7
 sentence1(C) --> determiner(N,M1,M2,C),noun(N,M1),verb_phrase(N,M2).
 sentence1([(L:-true)]) --> proper_noun(N,X),verb_phrase(N,X=>L).
+sentence1([(not L:-true)]) --> proper_noun(N,X),verb_phrase(N,[(not X=>L)]). 
 
 verb_phrase(s,M) --> [is],property(s,M).
 verb_phrase(p,M) --> [are],property(p,M).
 verb_phrase(N,M) --> iverb(N,M).
+verb_phrase(s,[(not M)]) --> [is],[not],property(s,M).
+verb_phrase(p,[(not M)]) --> [are],[not],property(p,M).
 
 property(N,M) --> adjective(N,M).
 property(s,M) --> [a],noun(s,M).
@@ -73,6 +79,7 @@ determiner(p,X=>B,X=>H,[(H:-B)]) --> [all].
 proper_noun(s,tweety) --> [tweety].
 proper_noun(s,peter) --> [peter].
 
+proper_noun(s,donald) --> [donald].
 
 %%% questions %%%
 
@@ -82,6 +89,7 @@ qword --> [].
 %qword --> [if]. 
 %qword --> [whether]. 
 
+question1(not Q) --> [who],verb_phrase(s,[(not _X=>Q)]).
 question1(Q) --> [who],verb_phrase(s,_X=>Q).
 question1(Q) --> [is], proper_noun(N,X),property(N,X=>Q).
 question1(Q) --> [does],proper_noun(_,X),verb_phrase(_,X=>Q).
