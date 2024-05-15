@@ -81,6 +81,9 @@ prove_rb(A,Rulebase,P0,P):-
 prove_rb(not(B),Rulebase,P0,P):-
     find_clause((A:-B),Rule,Rulebase),
 	prove_rb(not(A),Rulebase,[p(not(B),Rule)|P0],P).
+prove_rb(not(A),Rulebase,P0,P):-
+    prove_rb(A,Rulebase,P0,P), !, fail.
+prove_rb(not(_A),_Rulebase,P,P):-!.
 
 % top-level version that ignores proof
 prove_rb(Q,RB):-
