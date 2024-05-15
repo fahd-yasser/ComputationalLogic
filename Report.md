@@ -1,3 +1,6 @@
+# Computational Logic Coursework 2024
+# Fahd Abdelazim
+
 ## Introduction
 The aim of this coursework was to extend the logical functionality of the prolexa project. We implemented negation and default rules. This report discusses the implementations of these functionalities. 
 
@@ -23,9 +26,8 @@ We then defined the negated verb phrase and its different forms:
 verb_phrase(s,not(M)) --> [is],[not],property(s,M).
 verb_phrase(p,not(M)) --> [are],[not],property(p,M).
 ```
-In order for Prolexa to parse sentences with negated terms, we added two sentence defintions. The first sentence handles cases where a noun has a negative property ```Donald is not a teacher```. While the second sentence handles sentences where a determiner is present in a negative sentence ```All teachers are not happy```
+In order for Prolexa to parse sentences with negated terms, we added a sentence defintion. The sentence handles cases where a noun has a negative property ```Donald is not a teacher```.
 ```
-sentence1([(L:-true)]) --> proper_noun(N,X),verb_phrase(N,X=>L).
 sentence1([(not(L):-true)]) --> proper_noun(N,X),verb_phrase(N,not(X=>L)).
 ```
 To allow for questions to be asked about sentences with negative terms we added two questions. The first question handled queries to identyfy nouns that have a negative property ```who is not happy```. While the second question handles queries about whether a noun has a negative property
@@ -105,7 +107,7 @@ prove_rb(not(A),Rulebase,P0,P):-
     prove_rb(A,Rulebase,P0,P), !, fail.
 prove_rb(not(_A),_Rulebase,P,P):-!.
 ```
-### Tetsing
+### Testing
 ```
 prolexa> 'all birds fly except penguins'.
 *** utterance(all birds fly except penguins)
